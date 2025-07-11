@@ -1,18 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My 3D Model</title>
+  <meta charset="UTF-8">
+  <title>3D Model Viewer</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin: 0; background: #eee; }
+    model-viewer { width: 100%; height: 100vh; }
+    .progress-bar, #ar-button, #ar-prompt { display: none; } /* Optional: Hide extra elements if not using them */
+  </style>
 </head>
 <body>
+
   <model-viewer 
-    src="3d_printer_compressed.glb"
-    alt="A 3D model"
-    auto-rotate
-    camera-controls
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    style="width: 100%; height: 600px;">
+    src="3d_printer_compressed.glb" 
+    ar 
+    ar-modes="webxr scene-viewer quick-look" 
+    camera-controls 
+    tone-mapping="neutral" 
+    poster="poster.webp"
+    shadow-intensity="1"
+    camera-orbit="-360.3deg 163.2deg 1.172m"
+    field-of-view="30deg"
+    style="width: 100%; height: 100vh;">
+    
+    <div class="progress-bar hide" slot="progress-bar">
+      <div class="update-bar"></div>
+    </div>
+
+    <button slot="ar-button" id="ar-button">
+      View in your space
+    </button>
+
+    <div id="ar-prompt">
+      <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+    </div>
   </model-viewer>
+
 </body>
 </html>
