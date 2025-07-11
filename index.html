@@ -35,13 +35,18 @@
       display: inline-block;
       position: absolute;
     }
+        /* 🔵 Hide default AR button (top left corner button on mobile) */
+    model-viewer::part(default-ar-button) {
+      display: none;
+    }
+    
   </style>
 </head>
 <body>
 
   <model-viewer 
-    src="3d_printer_compressed.glb" 
-    ar 
+    src="3d_printer_compressed.glb"
+    ar
     ar-modes="webxr scene-viewer quick-look"
     camera-controls
     tone-mapping="neutral"
@@ -49,6 +54,9 @@
     shadow-intensity="1"
     camera-orbit="-360.3deg 163.2deg 1.172m"
     field-of-view="30deg"
+    camera-target="0m 0m 0m"
+    min-camera-orbit="-360deg 30deg auto"
+    max-camera-orbit="360deg 330deg auto"
     style="width: 100%; height: 100vh;">
 
     <!-- Hotspots -->
@@ -89,6 +97,9 @@
     <button slot="ar-button" id="ar-button">
       View in your space
     </button>
+    
+    <!-- Custom AR button here -->
+    <button slot="ar-button" id="ar-button">View in your space</button>
 
     <!-- AR prompt -->
     <div id="ar-prompt">
