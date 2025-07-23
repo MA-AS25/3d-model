@@ -97,19 +97,27 @@
   </model-viewer>
 
 <script>
+  function toggleAnnotation(btn, e) {
+    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
+    const annotation = btn.querySelector('.hotspotAnnotation');
+    if (annotation) {
+      annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
+    }
+    // Prevent model-viewer from handling the event (stops model jump)
+    e.stopPropagation();
+    e.preventDefault();
+    return false;
+  }
+
   document.querySelectorAll('.hotspot').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      // Hide all other annotations
-      document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
-      // Toggle this one
-      const annotation = btn.querySelector('.hotspotAnnotation');
-      if (annotation) {
-        annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
-      }
-      e.stopPropagation();
-    });
+    btn.addEventListener('click', function(e) { toggleAnnotation(btn, e); });
+    btn.addEventListener('touchend', function(e) { toggleAnnotation(btn, e); });
   });
+
   document.body.addEventListener('click', function() {
+    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
+  });
+  document.body.addEventListener('touchend', function() {
     document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
   });
 </script>
