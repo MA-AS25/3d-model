@@ -7,15 +7,14 @@
   <style>
     body {
       margin: 0;
-      background-color: #eee;
+      background-color: #888888;
     }
     model-viewer {
       width: 100vw;
       height: 100vh;
-      background-color: #eee;
     }
 
-    button.hotspot {
+    .hotspot {
       background: #2196f3;
       border-radius: 50%;
       border: none;
@@ -36,6 +35,14 @@
       transform: translateY(-10px);
       white-space: nowrap;
     }
+
+    .hotspot:hover .hotspotAnnotation {
+      display: block;
+    }
+
+    :not(:defined)>* {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +50,6 @@
   <model-viewer
     src="onepartrx.glb"
     alt="A 3D model"
-    auto-rotate
     camera-controls
     shadow-intensity="1"
     environment-image="neutral"
