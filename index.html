@@ -13,6 +13,41 @@
       width: 100vw;
       height: 100vh;
     }
+    
+    .hotspot {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: blue;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    .hotspot[slot="hotspot-3"] {
+      --min-hotspot-opacity: 0;
+      background-color: red;
+    }
+
+    .hotspot[slot="hotspot-1"]:not([data-visible]) {
+      background-color: transparent;
+      border: 3px solid blue;
+    }
+
+    .annotation {
+      background-color: #888888;
+      position: absolute;
+      transform: translate(10px, 10px);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    /* This keeps child nodes hidden while the element loads */
+    :not(:defined)>* {
+      display: none;
+    }
+
   </style>
 </head>
 <body>
@@ -47,7 +82,7 @@
       data-normal="0.051654787656975565m -3.7090748509729615e-7m 0.9986650003439469m" 
       data-visibility-attribute="visible">
         <div class="HotspotAnnotation">Max Nozzle Temperature: 250°C</div>
-        
+
     </button><button class="Hotspot" slot="hotspot-4" 
       data-position="0.18095327739917696m -0.057414095331121705m -0.12499372743366904m" 
       data-normal="0m -3.714033083862232e-7m 0.9999999999999312m" 
