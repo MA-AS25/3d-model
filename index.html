@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>3D printer requirements</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     html, body {
@@ -10,14 +11,28 @@
       margin: 0;
       padding: 0;
       background-color: #888888;
+      width: 100vw;
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      flex: 1 1 0%;
+      display: flex;
+      flex-direction: column;
     }
 
     model-viewer {
+      flex: 1 1 0%;
       width: 100%;
       height: 100%;
+      min-height: 0;
+      min-width: 0;
+      display: block;
       max-width: 100vw;
       max-height: 100vh;
-      display: block;
     }
 
     .hotspot {
