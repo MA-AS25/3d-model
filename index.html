@@ -44,24 +44,6 @@
   </style>
 </head>
 
-<script>
-  document.querySelectorAll('.hotspot').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      // Hide all other annotations
-      document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
-      // Toggle this one
-      const annotation = btn.querySelector('.hotspotAnnotation');
-      if (annotation) {
-        annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
-      }
-      e.stopPropagation();
-    });
-  });
-  document.body.addEventListener('click', function() {
-    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
-  });
-</script>
-
 <body>
 
   <model-viewer
@@ -106,6 +88,25 @@
     </button>
 
   </model-viewer>
+
+<script>
+  document.querySelectorAll('.hotspot').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      // Hide all other annotations
+      document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
+      // Toggle this one
+      const annotation = btn.querySelector('.hotspotAnnotation');
+      if (annotation) {
+        annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
+      }
+      e.stopPropagation();
+    });
+  });
+  document.body.addEventListener('click', function() {
+    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
+  });
+</script>
+
 
 </body>
 </html>
