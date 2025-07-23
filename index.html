@@ -51,7 +51,7 @@
         position: absolute;
       left: 50%;
       top: -40px;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(-10px);
       display: none;
       position: absolute;
       background: white;
@@ -59,12 +59,19 @@
       padding: 6px 10px;
       border-radius: 5px;
       font-size: 14px;
-      transform: translateY(-10px);
-      white-space: nowrap;
+      max-width: 90vw;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      box-sizing: border-box;
       z-index: 20;
     }
 
- 
+    @media (max-width: 600px) {
+      .hotspotAnnotation {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+    }
 
     :not(:defined)>* {
       display: none;
