@@ -15,7 +15,7 @@
       background-color: #eee;
     }
 
-        button.hotspot {
+    button.hotspot {
       background: #2196f3;
       border-radius: 50%;
       border: none;
@@ -50,13 +50,35 @@
     ar
     ar-modes="webxr scene-viewer quick-look">
 
-        <!-- Working test hotspot -->
-    <button class="hotspot" slot="hotspot-1"
-      data-position="0m 0.1m 0m"
-      data-normal="0m 1m 0m"
+
+    <button class="hotspot" slot="hotspot-1" 
+      data-position="-0.002050196384687536m -0.18925228861364096m 0.12460427377036834m" 
+      data-normal="0m 0.4999921750415683m 0.8660299214791611m" 
       data-visibility-attribute="visible">
-      <div class="hotspotAnnotation">Test hotspot</div>
+      <div class="hotspotAnnotation">Display for user interaction</div>
     </button>
+
+    <button class="hotspot" slot="hotspot-2" 
+      data-position="0.025805461161467466m -0.0010542685072654212m 0.053460173016288776m" 
+      data-normal="0m 0.9999999999999312m 3.714033083862232e-7m" 
+      data-visibility-attribute="visible">
+        <div class="hotspotAnnotation">Printable volume of 120×120×120 mm</div>
+    </button>
+
+    <button class="hotspot" slot="hotspot-3" 
+      data-position="0.0004410981663030986m 0.007504907895982501m 0.030784472084318105m" 
+      data-normal="0.051654787656975565m -3.7090748509729615e-7m 0.9986650003439469m" 
+      data-visibility-attribute="visible">
+        <div class="hotspotAnnotation">Max Nozzle Temperature: 250°C</div>
+    </button>
+
+    <button class="hotspot" slot="hotspot-4" 
+      data-position="0.18095327739917696m -0.057414095331121705m -0.12499372743366904m" 
+      data-normal="0m -3.714033083862232e-7m 0.9999999999999312m" 
+      data-visibility-attribute="visible">
+        <div class="hotspotAnnotation">Supported materials: PLA, ABS, and PETG</div>
+    </button>
+
   </model-viewer>
 
 </body>
