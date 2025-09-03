@@ -1,156 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>3D printer requirements</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background-color: #888888;
-      width: 100vw;
-      min-height: 100vh;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-    body {
-      flex: 1 1 0%;
-      display: flex;
-      flex-direction: column;
-    }
+<div id="filter-container" style="margin-bottom: 10px;">
+  <label for="category-filter">Category:</label>
+  <select id="category-filter">
+    <option value="all">All</option>
+    <option value="hardware">Hardware</option>
+    <option value="software">Software</option>
+    <option value="safety">Safety</option>
+    <option value="interface">Interface</option>
+  </select>
+  <label for="status-filter">Status:</label>
+  <select id="status-filter">
+    <option value="all">All</option>
+    <option value="critical">Critical</option>
+    <option value="implemented">Implemented</option>
+    <option value="on schedule">On Schedule</option>
+  </select>
+</div>
 
-    model-viewer {
-      flex: 1 1 0%;
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      min-width: 0;
-      display: block;
-      max-width: 100vw;
-      max-height: 100vh;
-    }
-
-    .hotspot {
-      position: relative;
-      background: #2196f3;
-      border-radius: 50%;
-      border: none;
-      width: 20px;
-      height: 20px;
-      pointer-events: auto;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    .hotspotAnnotation {
-        position: absolute;
-      left: 50%;
-      top: -40px;
-      transform: translateX(-50%) translateY(-10px);
-      display: none;
-      position: absolute;
-      background: white;
-      color: black;
-      padding: 6px 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      max-width: 90vw;
-      text-align: center;         /* Center the text */
-      overflow-wrap: break-word;  /* Wrap at word boundaries */
-      word-break: normal;         /* Only break at normal word boundaries */
-      box-sizing: border-box;
-      z-index: 20;
-    }
-
-    @media (max-width: 600px) {
-      .hotspotAnnotation {
-        font-size: 12px;
-        padding: 5px 8px;
-      }
-    }
-
-    :not(:defined)>* {
-      display: none;
-    }
-  </style>
-</head>
-
-<body>
-
-  <model-viewer
-    src="onepartrx.glb"
-    alt="A 3D model"
-    camera-controls
-    interaction-prompt="none"
-    shadow-intensity="1"
-    environment-image="neutral"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    disable-zoom
-    camera-target="0m 0m 0m"
-    >
-
-    <button class="hotspot" slot="hotspot-1" 
-      data-position="-0.002050196384687536m -0.18925228861364096m 0.12460427377036834m" 
-      data-normal="0m 0.4999921750415683m 0.8660299214791611m" 
-      data-visibility-attribute="visible">
-      <div class="hotspotAnnotation">Display for user interaction</div>
-    </button>
-
-    <button class="hotspot" slot="hotspot-2" 
-      data-position="0.025805461161467466m -0.0010542685072654212m 0.053460173016288776m" 
-      data-normal="0m 0.9999999999999312m 3.714033083862232e-7m" 
-      data-visibility-attribute="visible">
-        <div class="hotspotAnnotation">Printable volume of 120×120×120 mm</div>
-    </button>
-
-    <button class="hotspot" slot="hotspot-3" 
-      data-position="0.0004410981663030986m 0.007504907895982501m 0.030784472084318105m" 
-      data-normal="0.051654787656975565m -3.7090748509729615e-7m 0.9986650003439469m" 
-      data-visibility-attribute="visible">
-        <div class="hotspotAnnotation">Max Nozzle Temperature: 250°C</div>
-    </button>
-
-    <button class="hotspot" slot="hotspot-4" 
-      data-position="0.18095327739917696m -0.057414095331121705m -0.12499372743366904m" 
-      data-normal="0m -3.714033083862232e-7m 0.9999999999999312m" 
-      data-visibility-attribute="visible">
-        <div class="hotspotAnnotation">Supported materials: PLA, ABS, and PETG</div>
-    </button>
-
-  </model-viewer>
+<model-viewer
+  id="modelViewer"
+  src="https://xr-lab.isem-tuhh.de/wp-content/uploads/2025/08/onepartrx.glb"
+  alt="A 3D model"
+  camera-controls
+  interaction-prompt="none"
+  shadow-intensity="1"
+  environment-image="neutral"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  disable-zoom
+  camera-target="0m 0m 0m"
+  style="width: 100%; height: 600px;"
+>
+  <!-- Hotspots will be injected by JS -->
+</model-viewer>
 
 <script>
-  function toggleAnnotation(btn, e) {
-    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
-    const annotation = btn.querySelector('.hotspotAnnotation');
-    if (annotation) {
-      annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
-    }
-    // Prevent model-viewer from handling the event (stops model jump)
-    e.stopPropagation();
-    e.preventDefault();
-    return false;
+const hotspots = [
+  {
+    slot: "hotspot-1",
+    position: "-0.00205m -0.18925m 0.12460m",
+    normal: "0m 0.5m 0.866m",
+    category: "interface",
+    status: "implemented",
+    tooltip: "Display for user interaction"
+  },
+  {
+    slot: "hotspot-2",
+    position: "0.0258m -0.00105m 0.05346m",
+    normal: "0m 1m 0m",
+    category: "hardware",
+    status: "critical",
+    tooltip: "Printable volume of 120×120×120 mm"
+  },
+  {
+    slot: "hotspot-3",
+    position: "-0.0064m 0.0095m 0.0307m",
+    normal: "0.05m 0m 1m",
+    category: "hardware",
+    status: "on schedule",
+    tooltip: "Max Nozzle Temperature: 250°C"
+  },
+  {
+    slot: "hotspot-4",
+    position: "0.1809m -0.0575m -0.1249m",
+    normal: "0m 0m 1m",
+    category: "hardware",
+    status: "implemented",
+    tooltip: "Supported materials: PLA, ABS, and PETG"
   }
+];
 
-  document.querySelectorAll('.hotspot').forEach(btn => {
-    btn.addEventListener('click', function(e) { toggleAnnotation(btn, e); });
-    btn.addEventListener('touchend', function(e) { toggleAnnotation(btn, e); });
-  });
+const hoveredHotspots = new Set();
 
-  document.body.addEventListener('click', function() {
-    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
+function getStatusColor(status) {
+  if (status === "critical") return "red";
+  if (status === "implemented") return "green";
+  if (status === "on schedule") return "yellow";
+  return "gray";
+}
+
+function renderHotspots() {
+  const modelViewer = document.getElementById("modelViewer");
+  // Remove old hotspots
+  Array.from(modelViewer.querySelectorAll("button.hotspot")).forEach(e => e.remove());
+
+  const category = document.getElementById("category-filter").value;
+  const status = document.getElementById("status-filter").value;
+
+  hotspots.forEach((hotspot, idx) => {
+    if ((category === "all" || hotspot.category === category) &&
+        (status === "all" || hotspot.status === status)) {
+      const btn = document.createElement("button");
+      btn.className = "hotspot";
+      btn.setAttribute("slot", hotspot.slot);
+      btn.setAttribute("data-position", hotspot.position);
+      btn.setAttribute("data-normal", hotspot.normal);
+      btn.setAttribute("data-visibility-attribute", "visible");
+      btn.style.background = getStatusColor(hotspot.status);
+      btn.style.border = hoveredHotspots.has(idx) ? "2px solid blue" : "none";
+
+      const annotation = document.createElement("div");
+      annotation.className = "hotspotAnnotation";
+      annotation.textContent = hotspot.tooltip;
+      btn.appendChild(annotation);
+
+      btn.addEventListener("mouseover", function() {
+        if (!hoveredHotspots.has(idx)) {
+          hoveredHotspots.add(idx);
+          btn.style.border = "2px solid blue";
+        }
+      });
+
+      modelViewer.appendChild(btn);
+    }
   });
-  document.body.addEventListener('touchend', function() {
-    document.querySelectorAll('.hotspotAnnotation').forEach(a => a.style.display = 'none');
-  });
+}
+
+document.getElementById("category-filter").addEventListener("change", renderHotspots);
+document.getElementById("status-filter").addEventListener("change", renderHotspots);
+
+// Initial render
+renderHotspots();
 </script>
 
+<style>
+  model-viewer {
+    width: 50%;
+    height: 600px;
+    max-width: 100%;
+    display: block;
+  }
 
-</body>
-</html>
+  .hotspot {
+    width: 15px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+    pointer-events: auto;
+    cursor: pointer;
+    box-sizing: content-box;
+    transform: scale(1);
+  }
+
+  .hotspotAnnotation {
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%) translateY(-10px);
+    display: none;
+    background: white;
+    color: black;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 300px;
+    text-align: center;
+    overflow-wrap: break-word;
+    word-break: normal;
+    box-sizing: border-box;
+    z-index: 20;
+    text-transform: none;
+  }
+
+  .hotspot:hover .hotspotAnnotation {
+    display: block;
+  }
+</style>
