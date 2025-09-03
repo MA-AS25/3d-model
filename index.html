@@ -82,8 +82,8 @@ function getStatusColor(status) {
 
 function renderHotspots() {
   const modelViewer = document.getElementById("modelViewer");
-  // Remove old hotspots
-  Array.from(modelViewer.querySelectorAll("button.hotspot")).forEach(e => e.remove());
+  // Remove old hotspots (only those with class 'hotspot')
+  Array.from(modelViewer.querySelectorAll(".hotspot")).forEach(e => e.remove());
 
   const category = document.getElementById("category-filter").value;
   const status = document.getElementById("status-filter").value;
@@ -91,28 +91,33 @@ function renderHotspots() {
   hotspots.forEach((hotspot, idx) => {
     if ((category === "all" || hotspot.category === category) &&
         (status === "all" || hotspot.status === status)) {
-      const btn = document.createElement("button");
-      btn.className = "hotspot";
-      btn.setAttribute("slot", hotspot.slot);
-      btn.setAttribute("data-position", hotspot.position);
-      btn.setAttribute("data-normal", hotspot.normal);
-      btn.setAttribute("data-visibility-attribute", "visible");
-      btn.style.background = getStatusColor(hotspot.status);
-      btn.style.border = hoveredHotspots.has(idx) ? "2px solid blue" : "none";
+      const div = document.createElement("div");
+      div.className = "hotspot";
+      div.setAttribute("slot", hotspot.slot);
+      div.setAttribute("data-position", hotspot.position);
+      div.setAttribute("data-normal", hotspot.normal);
+      div.setAttribute("data-visibility-attribute", "visible");
+      div.style.background = getStatusColor(hotspot.status);
+      div.style.width = "15px";
+      div.style.height = "15px";
+      div.style.borderRadius = "50%";
+      div.style.border = hoveredHotspots.has(idx) ? "2px solid blue" : "none";
+      div.style.cursor = "pointer";
+      div.style.position = "relative";
 
       const annotation = document.createElement("div");
       annotation.className = "hotspotAnnotation";
       annotation.textContent = hotspot.tooltip;
-      btn.appendChild(annotation);
+      div.appendChild(annotation);
 
-      btn.addEventListener("mouseover", function() {
+      div.addEventListener("mouseover", function() {
         if (!hoveredHotspots.has(idx)) {
           hoveredHotspots.add(idx);
-          btn.style.border = "2px solid blue";
+          div.style.border = "2px solid blue";
         }
       });
 
-      modelViewer.appendChild(btn);
+      modelViewer.appendChild(div);
     }
   });
 }
