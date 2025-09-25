@@ -108,19 +108,38 @@ function renderHotspots() {
       const annotation = document.createElement("div");
       annotation.className = "hotspotAnnotation";
       annotation.textContent = hotspot.tooltip;
+      annotation.style.display = "none";
       div.appendChild(annotation);
 
-      div.addEventListener("mouseover", function() {
-        if (!hoveredHotspots.has(idx)) {
+      div.addEventListener("click", function(e) {
+        // Toggle visited state (blue border)
+        if (hoveredHotspots.has(idx)) {
+          hoveredHotspots.delete(idx);
+          div.style.border = "1px solid white";
+        } else {
           hoveredHotspots.add(idx);
           div.style.border = "2px solid blue";
         }
+
+        // Hide all other annotations
+        Array.from(modelViewer.querySelectorAll(".hotspotAnnotation")).forEach(a => a.style.display = "none");
+        // Toggle this annotation
+        annotation.style.display = (annotation.style.display === "block") ? "none" : "block";
+
+        // Prevent event from bubbling to document
+        e.stopPropagation();
       });
 
       modelViewer.appendChild(div);
     }
   });
 }
+
+// Hide annotation when clicking outside
+document.addEventListener('click', function() {
+  const modelViewer = document.getElementById("modelViewer");
+  Array.from(modelViewer.querySelectorAll(".hotspotAnnotation")).forEach(a => a.style.display = "none");
+});
 
 document.getElementById("category-filter").addEventListener("change", renderHotspots);
 document.getElementById("status-filter").addEventListener("change", renderHotspots);
@@ -172,8 +191,5 @@ renderHotspots();
     text-transform: none;
   }
 
-  .hotspot:hover .hotspotAnnotation {
-    display: block;
-  }
+  
 </style>
-
